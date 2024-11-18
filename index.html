@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CSAT Leaderboard</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #2c3e50;
+        color: #232F3E;
+        line-height: 1.6;
+        margin: 0;
+        padding: 40px;
+        box-sizing: border-box;
+      }
+
+      .container {
+        max-width: 1000px;
+        margin: 0 auto;
+        background-color: #8D59DE;
+        border-radius: 20px;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+        padding: 40px;
+      }
+
+      h1 {
+        color: #f1c40f;
+        text-align: center;
+        margin-bottom: 40px;
+        font-size: 42px;
+        font-weight: 700;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+      }
+
+      .controls {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+      }
+
+      select,
+      input {
+        padding: 12px 20px;
+        border: none;
+        border-radius: 30px;
+        font-size: 16px;
+        color: #2c3e50;
+        background-color: #ecf0f1;
+        transition: all 0.3s ease;
+        margin: 0 10px;
+      }
+
+      select:focus,
+      input:focus {
+        outline: none;
+        box-shadow: 0 0 0 4px rgba(241, 196, 15, 0.5);
+      }
+
+      table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0 15px;
+      }
+
+      th,
+      td {
+        padding: 20px;
+        text-align: left;
+        border-radius: 15px;
+        background-color: white;
+      }
+
+      th {
+        background-color: #4A238B;
+        color: white;
+        font-weight: 600;
+        text-transform: uppercase;
+      }
+
+      tr {
+        /* background-color: #465c74; */
+        transition: all 0.3s ease;
+        margin-bottom: 15px;
+      }
+
+      tr:hover {
+        transform: scale(1.03);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+      }
+
+      .rank-1 td {
+        background-color: white;
+        color: #232F3E;
+        font-weight: 700;
+      }
+
+      .rank-2 td {
+        background-color: white;
+        color: #232F3E;
+        font-weight: 600;
+      }
+
+      .rank-3 td {
+        background-color: white;
+        color: #232F3E;
+        font-weight: 600;
+      }
+
+      .trend-up {
+        color: #2ecc71;
+        font-size: 20px;
+      }
+
+      .trend-down {
+        color: #e74c3c;
+        font-size: 20px;
+      }
+
+      .trend-neutral {
+        color: #95a5a6;
+        font-size: 20px;
+      }
+
+      .rank {
+        font-size: 20px;
+        font-weight: bold;
+        width: 50px;
+        height: 50px;
+        line-height: 50px;
+        text-align: center;
+        border-radius: 50%;
+        background-color: #4A238B;
+        color: white;
+        display: inline-block;
+        margin-right: 15px;
+      }
+
+      .rank-1 .rank {
+        background-color: #f1c40f;
+        color: white;
+      }
+
+      .rank-2 .rank {
+        background-color: #C0C0C0;
+        color: white;
+      }
+
+      .rank-3 .rank {
+        background-color: #CD7F32;
+      }
+
+    /* countdown style */
+
+@import url('https://fonts.googleapis.com/css?family=Montserrat');
+
+.wrapper {
+  position: relative;
+  height: 12em;
+  
+}
+
+
+
+.countdown-container {
+  font-family: Montserrat, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  width: 100%;
+}
+
+.countdown {
+  display: flex;
+  transform-style: preserve3d;
+  perspective: 500px;
+  height: 10rem;
+  width: 64em;
+  margin: 0 auto;
+}
+.countdown.remove {
+  animation: hide-countdown 1s cubic-bezier(0, 0.9, 0.56, 1.2) forwards;
+  overflow: hidden;
+}
+
+.number, .separator {
+  display: block;
+  color: #8d59de;
+  height: 10rem;
+  font-size: 10rem;
+  position: relative;
+  line-height: 10rem;
+  text-align: center;
+  width: 100%;
+}
+
+.separator {
+  margin: 0;
+  width: 2rem;
+}
+
+.new, .old, .current {
+  color: whitesmoke;
+  position: absolute;
+  border-radius: 1rem;
+  height: 10rem;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+}
+
+
+
+.new {
+  animation: show-new 0.4s cubic-bezier(0, 0.9, 0.5, 1.2) forwards;
+}
+
+.old {
+  animation: hide-old 2s cubic-bezier(0, 0.9, 0.56, 1.2) forwards;
+}
+
+.countdown section {
+  position: relative;
+}
+
+#js-days:after, #js-hours:after, #js-minutes:after, #js-seconds:after {
+  content: "DAYS";
+  position: absolute;
+  text-align: center;
+  left: 0;
+  right: 0;
+  bottom: -80px;
+  font-size: 12px;
+}
+#js-hours:after {
+  content: "HOURS";
+}
+#js-minutes:after {
+  content: "MINUTES";
+}
+#js-seconds:after {
+  content: "SECONDS";
+}
+@keyframes hide-countdown {
+  to {
+    height: 0;
+    overflow: hidden;
+  }
+}
+@keyframes show-new {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) translateY(-2rem) scale(0.8) rotateX(-20deg);
+  }
+  100% {
+    transform: translate(-50%, -50%);
+  }
+}
+@keyframes hide-old {
+  0% {
+    transform: translate(-50%, -50%);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) translateY(-5rem) scale(0.5) rotateX(-75deg);
+  }
+}
+
+/* countdown button style  */
+
+.countdown-button {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 30px;
+  font-size: 16px;
+  color: #232f3e;
+  background-color: whitesmoke;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  font-weight: 600;
+  /* box-shadow:0 6px 20px rgba(74, 35, 139, 0.4); */
+}
+
+.countdown-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(74, 35, 139, 0.4);
+}
+
+.countdown-button:active {
+  transform: translateY(0);
+}
+
+.wrapper {
+  display: none; /* Initially hide the countdown */
+}
+
+/* Confetti Animation */
+/* .confetti-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 999;
+}
+
+.confetti {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background-color: #f1c40f;
+    clip-path: polygon(50% 0%, 90% 20%, 100% 60%, 75% 100%, 25% 100%, 0% 60%, 10% 20%);
+    animation: fall 3s ease-in-out infinite;
+}
+
+@keyframes fall {
+    0% {
+        transform: translateY(-100vh) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(100vh) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+/* Add hover transition for top 3 rows */
+/* .rank-1, .rank-2, .rank-3 {
+    transition: background-color 0.3s ease;
+}
+
+.rank-1:hover, .rank-2:hover, .rank-3:hover {
+    background-color: rgba(241, 196, 15, 0.1);
+} */ 
+
+/* Confetti Canvas Styles */
+#confetti-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none; /* Allows clicks to pass through to elements below */
+  z-index: 9999; /* Ensures the canvas is on top */
+}
+
+/* Confetti Animation Styles */
+
+@keyframes confetti-slow {
+  0% {
+    transform: translate3d(0, 0, 0) rotateX(0) rotateY(0);
+  }
+  100% {
+    transform: translate3d(25px, 105vh, 0) rotateX(360deg) rotateY(180deg);
+  }
+}
+
+@keyframes confetti-medium {
+  0% {
+    transform: translate3d(0, 0, 0) rotateX(0) rotateY(0);
+  }
+  100% {
+    transform: translate3d(100px, 105vh, 0) rotateX(100deg) rotateY(360deg);
+  }
+}
+
+@keyframes confetti-fast {
+  0% {
+    transform: translate3d(0, 0, 0) rotateX(0) rotateY(0);
+  }
+  100% {
+    transform: translate3d(-50px, 105vh, 0) rotateX(10deg) rotateY(250deg);
+  }
+}
+
+.confetti-container {
+  position: fixed; /* Changed to fixed to cover the entire viewport */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none; /* Allows clicks through the confetti */
+  z-index: 1000;
+}
+
+.confetti {
+  position: absolute;
+  z-index: 1;
+  top: -10px;
+  border-radius: 0%;
+}
+
+.confetti--animation-slow {
+  animation: confetti-slow 2.25s linear forwards;
+}
+
+.confetti--animation-medium {
+  animation: confetti-medium 1.75s linear forwards;
+}
+
+.confetti--animation-fast {
+  animation: confetti-fast 1.25s linear forwards;
+}
+
+
+
+
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+    
+      <h1>🏆 GSD CSAT Leaderboard 🏆</h1>
+      <div class="controls">
+        <div>
+          <label for="sort-by">Sort by:</label>
+          <select id="sort-by">
+            <option value="rank">Rank</option>
+            <option value="points">Points</option>
+            <option value="trend">Trend</option>
+          </select>
+        </div>
+        <div>
+          <input type="text" id="search" placeholder="🔍 Search by GamerTag" />
+        </div>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Rank</th>
+            <th>GamerTag</th>
+            <th>Points</th>
+            <th>Trend</th>
+          </tr>
+        </thead>
+        <tbody id="leaderboard-body">
+          <!-- Leaderboard data will be dynamically added here -->
+        </tbody>
+      </table>
+      <div class="js-container confetti-container"></div>
+    </div>
+    <!-- Counter button -->
+
+    <div style="text-align: center; margin-bottom: 20px;">
+        <button id="toggleCountdown" class="countdown-button">Show Countdown</button>
+      </div>
+      
+      <section class="wrapper">
+        <section id="countdown-container" class="countdown-container">
+          <article id="js-countdown" class="countdown">
+            <section id="js-days" class="number"></section>
+            <section class="separator">:</section>
+            <section id="js-hours" class="number"></section>
+            <section class="separator">:</section>
+            <section id="js-minutes" class="number"></section>
+            <section class="separator">:</section>
+            <section id="js-seconds" class="number"></section>
+          </article>
+        </section>
+      </section>
+      <canvas id="confetti-canvas"></canvas>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    </script>  
+    <script>
+document.addEventListener('DOMContentLoaded', function() {
+    const leaderboardData = [
+    { _id: '1', anonymousUsername: 'dcub3d28', points: 788.95, pointsTrend: 0 },
+    { _id: '2', anonymousUsername: 'ValuableGamer14', points: 774.45, pointsTrend: 0 },
+    { _id: '3', anonymousUsername: 'ChatMasterX_97', points: 773.07, pointsTrend: 0 },
+    { _id: '4', anonymousUsername: 'JamesBond007', points: 758.48, pointsTrend: 0 },
+    { _id: '5', anonymousUsername: 'Arnold1999', points: 757.62, pointsTrend: 0 },
+    { _id: '6', anonymousUsername: 'Error404', points: 731.68, pointsTrend: 0 },
+    { _id: '7', anonymousUsername: 'PeccyObsessed', points: 724.43, pointsTrend: 0 },
+    { _id: '8', anonymousUsername: 'Gamechanger28', points: 723.12, pointsTrend: 0 },
+    { _id: '9', anonymousUsername: 'RockStar', points: 658.17, pointsTrend: 0 },
+    { _id: '10', anonymousUsername: 'NightR@ven', points: 610.40, pointsTrend: 0 },
+    { _id: '11', anonymousUsername: 'letsgivethisatry', points: 607.60, pointsTrend: 0 },
+    { _id: '12', anonymousUsername: 'Sharp Slayer.', points: 586.15, pointsTrend: 0 },
+    { _id: '13', anonymousUsername: 'Batman', points: 578.73, pointsTrend: 0 },
+    { _id: '14', anonymousUsername: 'The AgileAvenger', points: 571.07, pointsTrend: 0 },
+    { _id: '15', anonymousUsername: 'Spluffic', points: 557.05, pointsTrend: 0 },
+    { _id: '16', anonymousUsername: 'CSATChamp96', points: 555.43, pointsTrend: 0 },
+    { _id: '17', anonymousUsername: 'ATLENGINE86', points: 536.90, pointsTrend: 0 },
+    { _id: '18', anonymousUsername: 'BetaTestUser', points: 528.91, pointsTrend: 0 },
+    { _id: '19', anonymousUsername: 'Sushi', points: 526.88, pointsTrend: 0 },
+    { _id: '20', anonymousUsername: 'proworker23', points: 522.86, pointsTrend: 0 },
+    { _id: '21', anonymousUsername: 'crew801', points: 515.87, pointsTrend: 0 },
+    { _id: '22', anonymousUsername: 'SausageSandwich', points: 511.41, pointsTrend: 0 },
+    { _id: '23', anonymousUsername: 'Falcon27', points: 491.05, pointsTrend: 0 },
+    { _id: '24', anonymousUsername: 'Lobowolven', points: 475.16, pointsTrend: 0 },
+    { _id: '25', anonymousUsername: 'MyrmidonOwl', points: 457.62, pointsTrend: 0 },
+    { _id: '26', anonymousUsername: 'TheAlphaLegend', points: 408.99, pointsTrend: 0 },
+    { _id: '27', anonymousUsername: 'Endeavour', points: 390.34, pointsTrend: 0 },
+    { _id: '28', anonymousUsername: 'customerCharmer6', points: 338.55, pointsTrend: 0 },
+    { _id: '29', anonymousUsername: 'Miscellanous1', points: 273.61, pointsTrend: 0 }
+];
+
+  const sortBy = document.getElementById('sort-by');
+  const searchInput = document.getElementById('search');
+  const leaderboardBody = document.getElementById('leaderboard-body');
+
+  function renderLeaderboard(data) {
+    leaderboardBody.innerHTML = '';
+    data.forEach((user, index) => {
+      const row = document.createElement('tr');
+      row.classList.add(`rank-${index + 1}`);
+
+      const rank = document.createElement('td');
+      const rankSpan = document.createElement('span');
+      rankSpan.classList.add('rank');
+      rankSpan.textContent = index + 1;
+      rank.appendChild(rankSpan);
+
+      const username = document.createElement('td');
+      username.textContent = user.anonymousUsername;
+
+      const points = document.createElement('td');
+      points.textContent = user.points.toFixed(2);
+
+      const trend = document.createElement('td');
+      if (user.pointsTrend > 0) {
+        trend.innerHTML = '<i class="fas fa-arrow-up trend-up"></i>';
+      } else if (user.pointsTrend < 0) {
+        trend.innerHTML = '<i class="fas fa-arrow-down trend-down"></i>';
+      } else {
+        trend.innerHTML = '<i class="fas fa-minus trend-neutral"></i>';
+      }
+
+      row.appendChild(rank);
+      row.appendChild(username);
+      row.appendChild(points);
+      row.appendChild(trend);
+      leaderboardBody.appendChild(row);
+    });
+  }
+
+  function sortAndFilterData() {
+    const sortByValue = sortBy.value;
+    const searchQuery = searchInput.value.toLowerCase();
+
+    const sortedData = leaderboardData.sort((a, b) => {
+      if (sortByValue === 'rank') {
+        // Sort by points in descending order for rank
+        return b.points - a.points;
+      } else if (sortByValue === 'points') {
+        // Sort by points in descending order
+        return b.points - a.points;
+      } else if (sortByValue === 'trend') {
+        // Sort by pointsTrend in descending order
+        return b.pointsTrend - a.pointsTrend;
+      }
+    });
+
+    const filteredData = sortedData.filter((user) =>
+      user.anonymousUsername.toLowerCase().includes(searchQuery)
+    );
+
+    renderLeaderboard(filteredData);
+  }
+
+  sortBy.addEventListener('change', sortAndFilterData);
+  searchInput.addEventListener('input', sortAndFilterData);
+
+  // Initial render
+  sortAndFilterData();
+  
+
+
+  // Countdown Button 
+
+  const toggleButton = document.getElementById('toggleCountdown');
+const countdownWrapper = document.querySelector('.wrapper');
+let isVisible = false;
+
+toggleButton.addEventListener('click', () => {
+  if (!isVisible) {
+    countdownWrapper.style.display = 'block';
+    toggleButton.textContent = 'Hide Countdown';
+    isVisible = true;
+    
+    // Initialize countdown if needed
+    updateCountdown();
+  } else {
+    countdownWrapper.style.display = 'none';
+    toggleButton.textContent = 'Show Countdown';
+    isVisible = false;
+  }
+});
+
+function updateCountdown() {
+  const targetDate = new Date('January 16, 2025 00:00:00').getTime();
+  
+  function update() {
+    const now = new Date().getTime();
+    const timeLeft = targetDate - now;
+
+    const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+
+
+
+    if (timeLeft < 0) {
+      clearInterval(countdownInterval);
+      document.getElementById('js-countdown').innerHTML = "The date has passed!";
+    }
+  }
+
+  update(); // Initial update
+  const countdownInterval = setInterval(update, 1000); // Update every second
+}
+
+
+  // Countdown Implementation 
+
+  $(function() {
+  // Set target date to January 16, 2025
+  const targetDate = new Date('January 16, 2025 00:00:00').getTime();
+  const now = new Date();
+
+  // Calculate initial values
+  function calculateTimeLeft() {
+    const currentTime = new Date().getTime();
+    const difference = targetDate - currentTime;
+
+    if (difference <= 0) {
+      return {
+        days: 0,
+        hours: 0,
+        minutes: 0,
+        seconds: 0,
+        expired: true
+      };
+    }
+
+    return {
+      days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+      hours: Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+      minutes: Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60)),
+      seconds: Math.floor((difference % (1000 * 60)) / 1000),
+      expired: false
+    };
+  }
+
+  function startCountdown() {
+    $('#countdown-container').show();
+
+    function update() {
+      const timeLeft = calculateTimeLeft();
+
+      if (timeLeft.expired) {
+        clearInterval(interval);
+        $('#js-countdown').html("The date has passed!");
+        return;
+      }
+
+      // Initialize sections if they're empty
+      ['days', 'hours', 'minutes', 'seconds'].forEach(unit => {
+        if ($(`#js-${unit}`).find('.current').length === 0) {
+          $(`#js-${unit}`).html(`<span class="current">${pad(timeLeft[unit])}`);
+        }
+      });
+
+      // Update values with animation
+      displayValue('#js-days', timeLeft.days);
+      displayValue('#js-hours', timeLeft.hours);
+      displayValue('#js-minutes', timeLeft.minutes);
+      displayValue('#js-seconds', timeLeft.seconds);
+    }
+
+    update(); // Initial update
+    const interval = setInterval(update, 1000);
+  }
+
+  function displayValue(target, value) {
+    const currentValue = $(target).find('.current').text();
+    if (currentValue !== pad(value)) {
+      var newDigit = $('<span>');
+      $(newDigit).text(pad(value))
+        .addClass('new');
+      $(target).prepend(newDigit);
+      $(target).find('.current').addClass('old').removeClass('current');
+      setTimeout(function() {
+        $(target).find('.old').remove();
+        $(target).find('.new').addClass('current').removeClass('new');
+      }, 900);
+    }
+  }
+
+  function pad(number) {
+    return ("0" + number).slice(-2);
+  }
+
+
+  // Initially hide the countdown container
+  $('#countdown-container').hide();
+  
+  // Start the countdown
+  startCountdown();
+});
+
+
+// Function to create confetti
+// function createConfetti() {
+//     const confettiContainer = document.createElement('div');
+//     confettiContainer.className = 'confetti-container';
+//     document.body.appendChild(confettiContainer);
+
+//     const colors = ['#f1c40f', '#e74c3c', '#3498db', '#2ecc71', '#9b59b6'];
+    
+//     // Create 50 confetti pieces
+//     for (let i = 0; i < 50; i++) {
+//         const confetti = document.createElement('div');
+//         confetti.className = 'confetti';
+//         confetti.style.left = Math.random() * 100 + 'vw';
+//         confetti.style.animationDelay = Math.random() * 3 + 's';
+//         confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+//         confettiContainer.appendChild(confetti);
+//     }
+
+//     // Remove confetti after animation
+//     setTimeout(() => {
+//         confettiContainer.remove();
+//     }, 4000);
+// }
+
+// // Add hover timer and confetti trigger for top 3 rows
+// document.addEventListener('DOMContentLoaded', () => {
+//     const topThreeRows = document.querySelectorAll('.rank-1, .rank-2, .rank-3');
+//     let hoverTimer;
+
+//     topThreeRows.forEach(row => {
+//         row.addEventListener('mouseenter', () => {
+//             hoverTimer = setTimeout(() => {
+//                 createConfetti();
+//             }, 4000);
+//         });
+
+//         row.addEventListener('mouseleave', () => {
+//             clearTimeout(hoverTimer);
+//         });
+//     });
+// });
+
+
+
+// Confetti Animation Code
+(function() {
+    'use strict';
+
+    var canvas = document.getElementById("confetti-canvas");
+    var ctx = canvas.getContext("2d");
+
+    // Set canvas size
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    var confetti = [];
+    var isAnimating = false;
+    var addConfettiInterval;
+
+    // Utility functions
+    function random(min, max) {
+      return Math.random() * (max - min) + min;
+    }
+
+    function radians(degrees) {
+      return degrees * Math.PI / 180;
+    }
+
+    // Add confetti particles
+    function addConfetti(x, y) {
+      for (var i = 0; i < 10; i++) { // Adjust number as needed
+        confetti.push({
+          x: x,
+          y: y,
+          w: random(5, 15),
+          h: random(5, 15),
+          vx: random(-5, 5),
+          vy: random(-15, -5),
+          gravity: 0.5,
+          sx: radians(Math.floor(random(0, 360))),
+          sy: radians(Math.floor(random(0, 360))),
+          angle: 0,
+          rot: random(-10, 10),
+          color: 'rgb(' + Math.floor(random(100, 230)) + ',' + Math.floor(random(100, 230)) + ',' + Math.floor(random(100, 230)) + ')'
+        });
+      }
+    }
+
+    // Update and draw confetti
+    function runConfetti() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      for (var i = confetti.length - 1; i >= 0; i--) {
+        var confetto = confetti[i];
+
+        // Flip the width and height
+        var w = Math.cos(confetto.sx) * confetto.w;
+        var h = Math.sin(confetto.sy) * confetto.h;
+
+        ctx.save();
+        ctx.translate(confetto.x + confetto.w / 2, confetto.y + confetto.h / 2);
+        ctx.rotate(confetto.angle * Math.PI / 180);
+
+        // Draw the confetto
+        ctx.fillStyle = confetto.color;
+        ctx.fillRect(-w / 2, -h / 2, w, h);
+
+        ctx.restore();
+
+        // Update properties
+        confetto.sx += radians(5);
+        confetto.sy += radians(5);
+        confetto.x += confetto.vx;
+        confetto.vy += confetto.gravity;
+        confetto.y += confetto.vy;
+        confetto.angle += confetto.rot;
+
+        // Remove if off-screen
+        if (confetto.y - confetto.h > canvas.height) {
+          confetti.splice(i, 1);
+        }
+      }
+
+      if (confetti.length > 0) {
+        requestAnimationFrame(runConfetti);
+      } else {
+        isAnimating = false;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+      }
+    }
+
+    // Event listeners for the top three rows
+    const topThreeRows = document.querySelectorAll('.rank-1, .rank-2, .rank-3');
+
+    topThreeRows.forEach(row => {
+      let addConfettiInterval;
+
+      row.addEventListener('mousedown', (event) => {
+        // Get the position where the confetti should start
+        const rect = canvas.getBoundingClientRect();
+        const x = event.clientX - rect.left;
+        const y = event.clientY - rect.top;
+
+        // Start adding confetti immediately
+        addConfetti(x, y);
+        if (!isAnimating) {
+          isAnimating = true;
+          runConfetti();
+        }
+
+        // Add confetti continuously while the mouse is held down
+        addConfettiInterval = setInterval(() => {
+          addConfetti(x, y);
+        }, 200); // Adjust the interval as needed
+      });
+
+      row.addEventListener('mouseup', () => {
+        clearInterval(addConfettiInterval);
+      });
+
+      row.addEventListener('mouseleave', () => {
+        clearInterval(addConfettiInterval);
+      });
+
+      // Touch events for mobile devices
+      row.addEventListener('touchstart', (event) => {
+        event.preventDefault(); // Prevent default touch behavior
+        const touch = event.touches[0];
+        const rect = canvas.getBoundingClientRect();
+        const x = touch.clientX - rect.left;
+        const y = touch.clientY - rect.top;
+
+        // Start adding confetti immediately
+        addConfetti(x, y);
+        if (!isAnimating) {
+          isAnimating = true;
+          runConfetti();
+        }
+
+        // Add confetti continuously while the touch is held down
+        addConfettiInterval = setInterval(() => {
+          addConfetti(x, y);
+        }, 200); // Adjust the interval as needed
+      });
+
+      row.addEventListener('touchend', () => {
+        clearInterval(addConfettiInterval);
+      });
+
+      row.addEventListener('touchcancel', () => {
+        clearInterval(addConfettiInterval);
+      });
+    });
+
+    // Adjust canvas size on window resize
+    window.addEventListener('resize', function() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
+  })();
+
+
+
+
+
+
+
+  // Confetti Hover Animation Code
+  (function() {
+    'use strict';
+
+    const Confettiful = function(el) {
+      this.el = el;
+      this.containerEl = null;
+
+      this.confettiFrequency = 3;
+      this.confettiColors = ['#EF2964', '#00C09D', '#2D87B0', '#48485E', '#EFFF1D'];
+      this.confettiAnimations = ['slow', 'medium', 'fast'];
+
+      this._setupElements();
+    };
+
+    Confettiful.prototype._setupElements = function() {
+      const containerEl = document.createElement('div');
+      const elPosition = window.getComputedStyle(this.el).position;
+
+      if (elPosition !== 'relative' && elPosition !== 'absolute') {
+        this.el.style.position = 'relative';
+      }
+
+      containerEl.classList.add('confetti-container');
+
+      // Append the container to the body to cover the whole page
+      document.body.appendChild(containerEl);
+
+      this.containerEl = containerEl;
+    };
+
+    Confettiful.prototype._renderConfetti = function() {
+      this.confettiInterval = setInterval(() => {
+        const confettiEl = document.createElement('div');
+        const confettiSize = (Math.floor(Math.random() * 3) + 7) + 'px';
+        const confettiBackground = this.confettiColors[Math.floor(Math.random() * this.confettiColors.length)];
+        const confettiLeft = Math.floor(Math.random() * window.innerWidth) + 'px';
+        const confettiAnimation = this.confettiAnimations[Math.floor(Math.random() * this.confettiAnimations.length)];
+
+        confettiEl.classList.add('confetti', 'confetti--animation-' + confettiAnimation);
+        confettiEl.style.left = confettiLeft;
+        confettiEl.style.width = confettiSize;
+        confettiEl.style.height = confettiSize;
+        confettiEl.style.backgroundColor = confettiBackground;
+
+        confettiEl.removeTimeout = setTimeout(function() {
+          confettiEl.parentNode.removeChild(confettiEl);
+        }, 3000);
+
+        this.containerEl.appendChild(confettiEl);
+      }, 25);
+    };
+
+    Confettiful.prototype._stopConfetti = function() {
+      clearInterval(this.confettiInterval);
+    };
+
+    // Initialize Confettiful on hover over top three rows
+    const topThreeRows = document.querySelectorAll('.rank-1, .rank-2, .rank-3');
+
+    topThreeRows.forEach(row => {
+      let confettiInstance;
+
+      row.addEventListener('mouseenter', () => {
+        // Create a new confetti instance
+        confettiInstance = new Confettiful(row);
+        confettiInstance._renderConfetti();
+      });
+
+      row.addEventListener('mouseleave', () => {
+        // Stop and remove confetti
+        if (confettiInstance) {
+          confettiInstance._stopConfetti();
+          // Remove the confetti container
+          if (confettiInstance.containerEl) {
+            confettiInstance.containerEl.remove();
+          }
+          confettiInstance = null;
+        }
+      });
+    });
+  })();
+
+
+});
+
+
+
+</script>
+
+  </body>
+</html>
